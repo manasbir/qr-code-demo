@@ -1,29 +1,27 @@
-import { WagmiConfig, configureChains, createConfig } from "wagmi";
+import { WagmiConfig, configureChains, createConfig, useAccount } from "wagmi";
 import { ConnectKitProvider, ConnectKitButton, getDefaultConfig } from "connectkit";
 import { foundry } from "viem/chains";
 import { publicProvider } from "wagmi/dist/providers/public";
+import { useEffect } from "react";
 
-const config = createConfig(
-  getDefaultConfig({
-    chains: [foundry],
+interface HeaderProps {
+  address: (newState: string | null) => void
+}
 
-    appName: "DCTRL GOV",
-    walletConnectProjectId: "8e4739eb11eb99fb03724310143c59e6",
+export default function Header(props: HeaderProps) {
+  const { address, isConnecting, isDisconnected } = useAccount()
 
-    // Optional
-    appDescription: "Your App Description",
-    appUrl: "https://family.co", // your app's url
-  })
-);
+  useEffect(() => {
+    if (!isConnecting && !isDisconnected) {
+      props.address(address as string)
+    }
+  }, [address])
 
-export default function Header() {
   return (
-    <WagmiConfig config={config}>
       <ConnectKitProvider>
-        <div>
+        <div className="flex-row items-end">
           <ConnectKitButton />
         </div>
       </ConnectKitProvider>
-    </WagmiConfig>
   );
 };
