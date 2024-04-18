@@ -8,7 +8,7 @@ interface QRCodeProps {
 }
 
 export default function QRCodeImg(props: QRCodeProps) {
-    let link = window.location.href "/qr?" + querystring.stringify({
+    let link = window.location.href + "/qr?" + querystring.stringify({
         name: props.name,
         chain: props.chain, 
         address: props.address, 
